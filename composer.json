@@ -1,0 +1,17 @@
+{
+    "name": "klimis/ss-api-analytics",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Klimis\\SsApiAnalytics\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Klimis"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.0.1"
+    }
+}
