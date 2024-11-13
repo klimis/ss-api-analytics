@@ -16,6 +16,9 @@ class AnalyticsProvider extends ServiceProvider
      */
     public function boot()
     {
+//        dump(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('ss-api-analytics.php'),
