@@ -41,7 +41,7 @@ class ServerSideAnalytics
      *
      * @return int
      */
-    public function getStatusCode(Response $response): int
+    public function getStatusCode($response): int
     {
         return $response->getStatusCode();
     }
