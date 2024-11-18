@@ -2,9 +2,7 @@
 
 namespace Klimis\SsApiAnalytics\Http\Middleware;
 
-use Illuminate\Support\Facades\Log;
 use Klimis\SsApiAnalytics\Facade\AnalyticsFacade;
-use Klimis\SsApiAnalytics\Jobs\LogRequest;
 
 class AnalyticsMiddleware
 {
@@ -16,12 +14,8 @@ class AnalyticsMiddleware
     public function terminate($request, $response)
     {
         if ($this->log($request)) {
-            echo ' logging ';
-            $requestData = $this->getRequestData($request, $response);
-            Log::debug('middleware $requestData: ' . json_encode($requestData));
-            LogRequest::dispatchSync($requestData);
+            $this->getRequestData($request, $response);
         }
-
     }
 
     public function getRequestData($request, $response): array

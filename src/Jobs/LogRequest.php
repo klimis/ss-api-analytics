@@ -22,8 +22,6 @@ class LogRequest implements ShouldQueue
 
     public function handle()
     {
-
         Analytics::create($this->data);
-        Log::alert('job $requestData: ' . json_encode($this->data));
     }
 }
