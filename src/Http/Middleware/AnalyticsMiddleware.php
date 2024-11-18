@@ -3,6 +3,7 @@
 namespace Klimis\SsApiAnalytics\Http\Middleware;
 
 use Klimis\SsApiAnalytics\Facade\AnalyticsFacade;
+use Klimis\SsApiAnalytics\Jobs\LogRequest;
 
 class AnalyticsMiddleware
 {
@@ -14,7 +15,7 @@ class AnalyticsMiddleware
     public function terminate($request, $response)
     {
         if ($this->log($request)) {
-            $this->getRequestData($request, $response);
+            LogRequest::dispatchSync($this->getRequestData($request, $response));
         }
     }
 
