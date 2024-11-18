@@ -101,4 +101,14 @@ class ServerSideAnalytics
         return config('ss-api-analytics.analytics_db_table');
     }
 
+    public function getParamLogOnly(): string
+    {
+        return config('ss-api-analytics.log_only_if_param_true');
+    }
+
+    public function getAnalyticsStatus(): bool
+    {
+        return config('ss-api-analytics.enable_analytics');
+    }
+
 }

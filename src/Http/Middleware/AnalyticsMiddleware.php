@@ -15,9 +15,13 @@ class AnalyticsMiddleware
 
     public function terminate($request, $response)
     {
-        $requestData = $this->getRequestData($request, $response);
-        //Log::debug('middleware $requestData: ' . json_encode($requestData));
-        LogRequest::dispatchSync($requestData);
+        if ($this->log($request)) {
+            echo ' logging ';
+            $requestData = $this->getRequestData($request, $response);
+            Log::debug('middleware $requestData: ' . json_encode($requestData));
+            LogRequest::dispatchSync($requestData);
+        }
+
     }
 
     public function getRequestData($request, $response): array
@@ -31,7 +35,12 @@ class AnalyticsMiddleware
             'ip_address' => AnalyticsFacade::getIpAddress($request),
             'referrer' => AnalyticsFacade::getReferrer($request),
             'query_params' => AnalyticsFacade::getQueryParams($request),
-            'duration_ms' => 0
+            'duration_ms' => 0,
         ];
+    }
+
+    public function log($request): bool
+    {
+        return AnalyticsFacade::getAnalyticsStatus() && $request->get(AnalyticsFacade::getParamLogOnly()) === 't';
     }
 }

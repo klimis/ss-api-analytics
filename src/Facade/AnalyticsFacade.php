@@ -16,14 +16,13 @@ use Illuminate\Support\Facades\Facade;
  * @method static void getReferrer(Request $request)
  * @method static void getQueryParams(Request $request)
  * @method static void getAnalyticsTable()
+ * @method static void getParamLogOnly()
+ * @method static void getAnalyticsStatus()
  */
 class AnalyticsFacade extends Facade
 {
-
     public static function getFacadeAccessor()
     {
         return 'analytics';
     }
-
-
 }
