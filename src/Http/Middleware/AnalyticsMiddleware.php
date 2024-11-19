@@ -2,11 +2,14 @@
 
 namespace Klimis\SsApiAnalytics\Http\Middleware;
 
+use Illuminate\Support\Facades\Log;
 use Klimis\SsApiAnalytics\Facade\AnalyticsFacade;
 use Klimis\SsApiAnalytics\Jobs\LogRequest;
 
 class AnalyticsMiddleware
 {
+    const PARAM_LOG_ONLY_VALUE = 't';
+
     public function handle($request, \Closure $next, $guard = null)
     {
         return $next($request);
@@ -15,6 +18,7 @@ class AnalyticsMiddleware
     public function terminate($request, $response)
     {
         if ($this->log($request)) {
+            Log::debug('Logging ss-api- request');
             LogRequest::dispatchSync($this->getRequestData($request, $response));
         }
     }
@@ -34,8 +38,19 @@ class AnalyticsMiddleware
         ];
     }
 
+    /**
+     * Log only if: 1. Analytics is enabled 2. Log only if query_param_log parametere is not set or is set and is equal to self::PARAM_LOG_ONLY_VALUE
+     */
     public function log($request): bool
     {
-        return AnalyticsFacade::getAnalyticsStatus() && $request->get(AnalyticsFacade::getParamLogOnly()) === 't';
+        if (AnalyticsFacade::getAnalyticsStatus()) {
+            if (AnalyticsFacade::getParamLogOnly() === null || (
+                    $request->has(AnalyticsFacade::getParamLogOnly()) && $request->get(AnalyticsFacade::getParamLogOnly()) === self::PARAM_LOG_ONLY_VALUE
+                )) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -32,7 +32,7 @@ class ServerSideAnalytics
 
     public static function getPath(Request $request): string
     {
-        return strtoupper($request->getPathInfo());
+        return $request->getPathInfo();
     }
 
 
@@ -101,9 +101,12 @@ class ServerSideAnalytics
         return config('ss-api-analytics.analytics_db_table');
     }
 
-    public function getParamLogOnly(): string
+    /** If this param is set log only if it is equal to 't''
+     * @return string
+     */
+    public function getParamLogOnly(): ?string
     {
-        return config('ss-api-analytics.log_only_if_param_true');
+        return config('ss-api-analytics.query_param_log');
     }
 
     public function getAnalyticsStatus(): bool
