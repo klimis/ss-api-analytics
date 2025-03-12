@@ -2,15 +2,12 @@
 
 namespace Klimis\SsApiAnalytics;
 
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class ServerSideAnalytics
 {
-
-
     public function setRequest(Request $request): self
     {
         $request = $request;
@@ -35,11 +32,8 @@ class ServerSideAnalytics
         return $request->getPathInfo();
     }
 
-
     /**
      * Returns the status code of the response.
-     *
-     * @return int
      */
     public function getStatusCode($response): int
     {
@@ -53,8 +47,6 @@ class ServerSideAnalytics
 
     /**
      * Returns the user agent of the request.
-     *
-     * @return string
      */
     public function getUserAgent(Request $request): string
     {
@@ -63,8 +55,6 @@ class ServerSideAnalytics
 
     /**
      * Returns the IP Address of the request.
-     *
-     * @return string
      */
     public function getIpAddress(Request $request): string
     {
@@ -73,8 +63,6 @@ class ServerSideAnalytics
 
     /**
      * Returns the referrer of the request.
-     *
-     * @return string
      */
     public function getReferrer(Request $request): ?string
     {
@@ -83,12 +71,14 @@ class ServerSideAnalytics
 
     /**
      * Returns the query parameters for the request.
-     *
-     * @return array|null
      */
     public function getQueryParams(Request $request): ?array
     {
-        return $request->query();
+        $r = base64_decode($request->get('r'));
+        $response = $request->query();
+        $response['referrer'] = $r;
+
+        return $response;
     }
 
     public function shouldTrackRequest(Request $request): bool
@@ -102,7 +92,6 @@ class ServerSideAnalytics
     }
 
     /** If this param is set log only if it is equal to 't''
-     * @return string
      */
     public function getParamLogOnly(): ?string
     {
@@ -113,5 +102,4 @@ class ServerSideAnalytics
     {
         return config('ss-api-analytics.enable_analytics');
     }
-
 }
