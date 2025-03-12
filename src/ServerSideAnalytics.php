@@ -74,11 +74,7 @@ class ServerSideAnalytics
      */
     public function getQueryParams(Request $request): ?array
     {
-        $r = base64_decode($request->get('r'));
-        $response = $request->query();
-        $response['referrer'] = $r;
-
-        return $response;
+        return $request->query();
     }
 
     public function shouldTrackRequest(Request $request): bool
